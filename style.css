@@ -1,0 +1,22 @@
+*,
+::after,
+::before {
+    box-sizing: border-box;
+}
+
+/* ------------ Généralités ------------ */
+
+body {
+    margin: auto;
+    text-align: center;
+}
+
+main {
+    max-width: 1300px;
+    padding: 1rem;
+}
+
+h1 {
+    font-size: clamp(2rem, 7vw, 3rem);
+    margin-bottom: 1rem;
+}
