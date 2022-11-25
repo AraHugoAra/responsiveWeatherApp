@@ -7,17 +7,62 @@
     <meta name="description" content="Another weather app, dfntly lesser than meteo-paris.com">
     <title>Weather App</title>
     <link rel="stylesheet" href="./reset.css">
+    <link href='http://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900italic,900' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="./style.css">
 </head>
 <body>
     <main>
+        <!-- Section titre et selecteur -->
         <h1>Weather App</h1>
         <form>
-            <input type="text" />
+            <input type="text" placeholder="Casteljaloux-les-Bains"/>
+            <select name="daysToDisplay" id="daysToDisplay">
+                <option value="3">3 Days</option>
+                <option value="5">5 Days</option>
+                <option value="7">7 Days</option>
+            </select>
             <button type="submit">Submit</button>
+            <!-- <button>🌔</button> -->
         </form>
-        <p class="weather-result"></p>
+        <!-- Section display de la météo -->
+        <div class="weather-container">
+            <div class="weather-display">
+                <h2 class="weather-day"></h2>
+                <p class="weather-main"></p>
+                <div class="weather-image"></div>
+            </div>
+            <div class="weather-display">
+                <h2 class="weather-day"></h2>
+                <p class="weather-main"></p>
+                <div class="weather-image"></div>
+            </div>
+            <div class="weather-display">
+                <h2 class="weather-day"></h2>
+                <p class="weather-main"></p>
+                <div class="weather-image"></div>
+            </div>
+            <div class="weather-display">
+                <h2 class="weather-day"></h2>
+                <p class="weather-main"></p>
+                <div class="weather-image"></div>
+            </div>
+            <div class="weather-display">
+                <h2 class="weather-day"></h2>
+                <p class="weather-main"></p>
+                <div class="weather-image"></div>
+            </div>
+            <div class="weather-display">
+                <h2 class="weather-day"></h2>
+                <p class="weather-main"></p>
+                <div class="weather-image"></div>
+            </div>
+            <div class="weather-display">
+                <h2 class="weather-day"></h2>
+                <p class="weather-main"></p>
+                <div class="weather-image"></div>
+            </div>
+        </div>
     </main>
-    <script src="index.js"></script>
+    <script type="module" src="index.js" ></script>
 </body>
 </html>
