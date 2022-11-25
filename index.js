@@ -7,6 +7,30 @@ const submitBtn = document.getElementsByTagName('button')[0]
 const inputField = document.getElementsByTagName('input')[0]
 const selectField = document.getElementsByTagName('select')[0]
 
+/* -------------------- Dark Mode -------------------- */
+
+let lightMode = "d"
+
+//fonction qui traite le timezone_offset
+
+const setTime = (arg) => {
+    //Heure du moment à Paris
+    let today = new Date() //2022-11-25T14:07:22.929Z
+    let stringToday = today.toString() //Fri Nov 25 2022 15:07:22 GMT+0100 (heure normale d’Europe centrale)
+    let gmtHour = stringToday.slice(16,18)//15
+    //Transformer l'heure de la DB
+    let localTime = parseInt(gmtHour) + (parseInt(arg.timezone_offset) / 3600) - 1
+    if (localTime > 7 && localTime < 20) {
+        lightMode = "d"
+        document.body.classList.remove('dark-mode')
+    } else {
+        lightMode = "n"
+        document.body.classList.add('dark-mode')
+    }
+}
+
+
+
 /* -------------------- OpenCage and OpenWeather API Request -------------------- */
 
 /* ----- Constantes des API's ----- */
@@ -90,6 +114,7 @@ return dayOfWeek
 const asyncRequests = async () => {
     const resOne = await getCoord()
     const resTwo = await getWeather(resOne)
+    const resThree = await setTime(resTwo)
     //on clear le display
     for(let i=0; i<weatherDisplay.length; i++) {
         weatherDisplay[i].classList.add('hidden')
@@ -108,7 +133,7 @@ const asyncRequests = async () => {
         weatherDay[day].innerText = stampToDate(resTwo.daily[day].dt)
         weatherText[day].innerText = `${resTwo.daily[day].weather[0].description}`
         weatherImage[day].innerHTML = imageDisplay
-        weatherImage[day].lastElementChild.setAttribute('src', `http://openweathermap.org/img/wn/${resTwo.daily[day].weather[0].icon}@2x.png`)
+        weatherImage[day].lastElementChild.setAttribute('src', `http://openweathermap.org/img/wn/${(resTwo.daily[day].weather[0].icon).slice(0, -1)}${lightMode}@2x.png`)
     }
 }
 
