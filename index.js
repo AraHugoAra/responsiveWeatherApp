@@ -11,25 +11,20 @@ const selectField = document.getElementsByTagName('select')[0]
 
 let lightMode = "d"
 
-//fonction qui traite le timezone_offset
-
+//Promise qui traite le timezone_offset
 const setTime = (arg) => {
-    //Heure du moment à Paris
-    let today = new Date() //2022-11-25T14:07:22.929Z
-    let stringToday = today.toString() //Fri Nov 25 2022 15:07:22 GMT+0100 (heure normale d’Europe centrale)
-    let gmtHour = stringToday.slice(16,18)//15
-    //Transformer l'heure de la DB
-    let localTime = parseInt(gmtHour) + (parseInt(arg.timezone_offset) / 3600) - 1
-    if (localTime > 7 && localTime < 20) {
-        lightMode = "d"
-        document.body.classList.remove('dark-mode')
-    } else {
-        lightMode = "n"
-        document.body.classList.add('dark-mode')
-    }
+    return new Promise (resolve => {
+        let timeHere = Math.round((Date.now() / 1000)) //Heure du moment à Paris (+ conversion en secondes pour coller à la DB)
+        let timeThere = parseInt(timeHere) + parseInt(arg.timezone_offset) - 3600 //Heure d'ici + offset API - 1h (cause: GMT+1)
+        if ((timeThere > arg.daily[0].sunrise) && (timeThere < arg.daily[0].sunset)) {
+            document.body.classList.remove('dark-mode')
+            resolve("d")
+        } else {
+            document.body.classList.add('dark-mode')
+            resolve("n")
+        }
+    })
 }
-
-
 
 /* -------------------- OpenCage and OpenWeather API Request -------------------- */
 
@@ -40,8 +35,6 @@ const cage_api_url = 'https://api.opencagedata.com/geocode/v1/json'
 // OpenWeather
 const weather_key = "d0fcc00c02efe5b8355fa57156f79f2b" //process.env.OPENWEATHER_API_KEY
 const weather_api_url = 'https://api.openweathermap.org/data/2.5/onecall'
-
-const imageDisplay = `<img alt="ceci est la météo" />`
 
 /* ----- Déclaration des variables ----- */
 let inputValue
@@ -114,7 +107,7 @@ return dayOfWeek
 const asyncRequests = async () => {
     const resOne = await getCoord()
     const resTwo = await getWeather(resOne)
-    const resThree = await setTime(resTwo)
+    lightMode = await setTime(resTwo)
     //on clear le display
     for(let i=0; i<weatherDisplay.length; i++) {
         weatherDisplay[i].classList.add('hidden')
@@ -132,12 +125,24 @@ const asyncRequests = async () => {
         weatherDisplay[day].classList.remove('hidden')
         weatherDay[day].innerText = stampToDate(resTwo.daily[day].dt)
         weatherText[day].innerText = `${resTwo.daily[day].weather[0].description}`
-        weatherImage[day].innerHTML = imageDisplay
-        weatherImage[day].lastElementChild.setAttribute('src', `https://openweathermap.org/img/wn/${(resTwo.daily[day].weather[0].icon).slice(0, -1)}${lightMode}@2x.png`)
+        weatherImage[day].innerHTML = `<img alt="${resTwo.daily[day].weather[0].description} icon" />`
+        weatherImage[day].lastElementChild.setAttribute('src', `http://openweathermap.org/img/wn/${(resTwo.daily[day].weather[0].icon).slice(0, -1)}${lightMode}@2x.png`)
     }
+}
+
+/* -------------------- Animation accordéon -------------------- */
+
+const deployAccordion = () => {
+    let thisAccordion = document.getElementsByClassName('weather-container')[0]
+    thisAccordion.style.maxHeight = "0px"
+    setTimeout(() => {
+        thisAccordion.style.maxHeight &&
+        (thisAccordion.style.maxHeight = "2000px")
+    }, 550)
 }
 
 submitBtn.onclick = async (e) => {
     e.preventDefault()
     asyncRequests()
+    deployAccordion()
 }
