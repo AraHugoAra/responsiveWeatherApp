@@ -11,20 +11,20 @@ body {
     text-align: center;
     background-image: linear-gradient(90deg, rgb(160, 222, 219),rgb(3, 165, 209));
     color: rgb(0, 41, 53);
+    font-family: 'Roboto';
 }
 
 main {
     max-width: 1300px;
     padding: 2rem;
 }
+
 /* ------------ Dark Mode ------------ */
 
 .dark-mode {
     background-image: linear-gradient(90deg,rgb(72, 105, 206), rgb(62, 25, 113));
     color:rgb(220, 235, 234);
 }
-
-
 
 /* ------------ Typo ------------ */
 
