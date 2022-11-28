@@ -126,7 +126,7 @@ const asyncRequests = async () => {
         weatherDay[day].innerText = stampToDate(resTwo.daily[day].dt)
         weatherText[day].innerText = `${resTwo.daily[day].weather[0].description}`
         weatherImage[day].innerHTML = `<img alt="${resTwo.daily[day].weather[0].description} icon" />`
-        weatherImage[day].lastElementChild.setAttribute('src', `http://openweathermap.org/img/wn/${(resTwo.daily[day].weather[0].icon).slice(0, -1)}${lightMode}@2x.png`)
+        weatherImage[day].lastElementChild.setAttribute('src', `https://openweathermap.org/img/wn/${(resTwo.daily[day].weather[0].icon).slice(0, -1)}${lightMode}@2x.png`)
     }
 }
 
